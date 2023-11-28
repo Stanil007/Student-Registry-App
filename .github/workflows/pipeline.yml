@@ -1,4 +1,4 @@
-name: Build and Test
+name: Build Test Deploy
 
 on:
   push:
@@ -22,3 +22,13 @@ jobs:
       run: npm install
     - name: Run the tests
       run: npm test
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to production
+        uses: johnbeynon/render-deploy-action@v0.0.8
+        with:
+          service-id: ${{ secrets.RENDER_TOKEN }}
+          api-key: ${{ secrets.SERVICE_ID}}
